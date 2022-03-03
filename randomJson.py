@@ -5,6 +5,7 @@
 
 import json
 import random
+from addJsonValue import addJsonValue
 
 def buildName(length:int):
     alphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQISTUVWXYZ0123456789"
@@ -96,3 +97,7 @@ for i in range(10):
     root, rootname = randomJson(namelen=namelength, depth=depth, nodesize=nodesize)
     filename = './randjson/'+rootname+"_"+str(depth)+"_"+str(nodesize)+ '.json'
     save_json(filename=filename, savedata=root)
+
+
+source = './randjson'
+addJsonValue(source=source)
