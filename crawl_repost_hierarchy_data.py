@@ -277,7 +277,7 @@ def get_repost(uid, mid):
   global all_weibos
   global headers
   max_page = -1
-  print('https://weibo.com/' + uid + '/' + mid_to_url(mid), flush = True)
+  print('https://weibo.com/' + str(uid) + '/' + mid_to_url(mid), flush = True)
   i = 1
   new_weibo_zero_count = 0
   try:
@@ -324,7 +324,7 @@ if not os.path.exists(outputFolder):
 
 # 先获取热点链接
 saveFilePath = './hotlinks/link.csv'
-get_repost_1(limit_pages=10,filepath=saveFilePath)
+# get_repost_1(limit_pages=40,filepath=saveFilePath)
 # 读取热点链接
 df = pd.read_csv(saveFilePath)
 weibo_links = df['hotlink'].values.tolist()
