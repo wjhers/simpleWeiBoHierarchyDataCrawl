@@ -324,7 +324,7 @@ if not os.path.exists(outputFolder):
 
 # 先获取热点链接
 saveFilePath = './hotlinks/link.csv'
-# get_repost_1(limit_pages=10,filepath=saveFilePath)
+get_repost_1(limit_pages=10,filepath=saveFilePath)
 # 读取热点链接
 df = pd.read_csv(saveFilePath)
 weibo_links = df['hotlink'].values.tolist()
