@@ -76,3 +76,6 @@ def addJsonValue(source):
     for path in listdir:
         data = load_json(filename=source + '/' + path, str_to_value='value')
         save_json(filename=source + '/' + path, savedata=data)
+
+source = './randjson'
+addJsonValue(source=source)
