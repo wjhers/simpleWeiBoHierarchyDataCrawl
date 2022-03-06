@@ -21,7 +21,6 @@ ALPHABET = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
  
 def base62_encode(num, alphabet=ALPHABET):
     """Encode a number in Base X
- 
     `num`: The number to encode
     `alphabet`: The alphabet to use for encoding
     """
@@ -57,14 +56,6 @@ def mid_to_url(midint):
 
     # >>> mid_to_url(3501756485200075)
     # 'z0JH2lOMb'
-    # >>> mid_to_url(3501703397689247)
-    # 'z0Ijpwgk7'
-    # >>> mid_to_url(3501701648871479)
-    # 'z0IgABdSn'
-    # >>> mid_to_url(3500330408906190)
-    # 'z08AUBmUe'
-    # >>> mid_to_url(3500247231472384)
-    # 'z06qL6b28'
     
     midint = str(midint)[::-1]
     size = len(midint) / 7 if len(midint) % 7 == 0 else len(midint) / 7 + 1
@@ -85,14 +76,6 @@ def url_to_mid(url):
 
     # >> url_to_mid('z0JH2lOMb')
     # 3501756485200075L
-    # >> url_to_mid('z0Ijpwgk7')
-    # 3501703397689247L
-    # >> url_to_mid('z0IgABdSn')
-    # 3501701648871479L
-    # >> url_to_mid('z08AUBmUe')
-    # 3500330408906190L
-    # >> url_to_mid('z06qL6b28')
-    # 3500247231472384L
 
     url = str(url)[::-1]
     size = len(url) / 4 if len(url) % 4 == 0 else len(url) / 4 + 1
@@ -136,7 +119,7 @@ def getLongText(mid, headers):
     if response.status_code == 200:
       return response.json().get('data').get('longTextContent')
   except requests.ConnectionError as e:
-    print('错误', e.args, flush = True)
+    print('Error', e.args, flush = True)
   return None
 
 def reponseInfo2Dict(mid, mblog):
@@ -145,7 +128,7 @@ def reponseInfo2Dict(mid, mblog):
   weibo['visible_list_id'] = mblog.get('visible').get('list_id')
   weibo['time'] = formatTime(mblog.get('created_at'))
   # weibo['id'] = mblog.get('id')
-  # weibo['idstr'] = mblog.get('idstr') # id idstr 两者与mid相同
+  # weibo['idstr'] = mblog.get('idstr') # id, idstr and mid are the same
   weibo['mid'] = mblog.get('mid')
   weibo['mblogid'] = mblog.get('mblogid')
 
@@ -208,8 +191,8 @@ def reponseInfo2Dict(mid, mblog):
   return weibo
 
 
-# 获取样例，比如 https://weibo.com/2656274875/LdOT4awvY 的状态信息，可以称之为初始起点
-# 在页面 https://weibo.com/2656274875/LdOT4awvY 下F12可查看
+# select a initial page https://weibo.com/2656274875/LdOT4awvY 
+# on the page https://weibo.com/2656274875/LdOT4awvY type F12 to view the responses of the link "https://weibo.com/ajax/statuses/show?id="
 def getWeibo(mid, headers):
   url = "https://weibo.com/ajax/statuses/show?id=" + mid
   try:
@@ -221,12 +204,12 @@ def getWeibo(mid, headers):
     else:
       print(response.status_code, response.content, flush = True)
   except Exception as e:
-    print('错误', e, flush = True)
+    print('Error', e, flush = True)
 
   return None
 
-# 返回带有评论的页面
-# 在页面 https://weibo.com/2656274875/LdOT4awvY#repost 下F12可查看
+# get the page with comments
+# on the page https://weibo.com/2656274875/LdOT4awvY#repost type F12 to view the responses
 def get_page(params, headers):
   url = "https://weibo.com/ajax/statuses/repostTimeline?" + urlencode(params)
   try:
@@ -237,12 +220,10 @@ def get_page(params, headers):
     else:
       print(response.status_code, response.content, flush = True)
   except Exception as e:
-    print('错误', e, flush = True)
+    print('Error', e, flush = True)
 
   return None
 
-
-# 解析页面
 def parse_data(data, pid):
   if data is None:
     return None, []
@@ -253,16 +234,12 @@ def parse_data(data, pid):
     if mblog:
       mid = mblog.get('mid')
       weibo = reponseInfo2Dict(mid, mblog)
-      # pid to find the node's parent node
-      weibo['pid'] = pid
+      weibo['pid'] = pid # parent id
 
       # if 'retweeted_status' in mblog:
       #   weibo['pid'] = mblog.get('retweeted_status').get('mid') 这里的mid保存的还是原始根的id
 
       if weibo['reposts_count'] > 0 and not (weibo['mid'] in seeds_set):
-        # print(weibo['text'])
-        # 每个非空的种子进去，导致重复爬取。。。。，
-        # 
         # 原始注释：不用爬子微博的转发，全部微博的转发，包括子微博
         # 当前注释：需要爬取微博转发，因为需要标记父子节点
         seeds_set.add(weibo['mid'])
@@ -276,10 +253,10 @@ def parse_data(data, pid):
 def get_repost(uid, mid):
   global all_weibos
   global headers
+  global new_weibo_zero_count
   max_page = -1
   print('https://weibo.com/' + str(uid) + '/' + mid_to_url(mid), flush = True)
   i = 1
-  new_weibo_zero_count = 0
   try:
     while True:
       if max_page is None or  (max_page > 0 and i > max_page):
@@ -301,14 +278,17 @@ def get_repost(uid, mid):
       
       if len(new_weibos) == 0:
         new_weibo_zero_count += 1
-      else:
-        new_weibo_zero_count = 0
+      # else:
+      #   new_weibo_zero_count = 0
 
       if new_weibo_zero_count > 20:
         break
       
       print('all_weibos', len(all_weibos), flush = True)
       i = i + 1
+
+      if i > 200:
+        break
   
   except Exception as e:
     print(e)
@@ -320,20 +300,17 @@ outputFolder = 'repost/'
 if not os.path.exists(outputFolder):
   os.mkdir(outputFolder)
 
-
-
-# 先获取热点链接
 saveFilePath = './hotlinks/link.csv'
 # get_repost_1(limit_pages=40,filepath=saveFilePath)
-# 读取热点链接
 df = pd.read_csv(saveFilePath)
 weibo_links = df['hotlink'].values.tolist()
 
+
 for weibo_link in weibo_links:
   weibo_url = weibo_link.split('/')[-1]
-  # print(type(weibo_url))
   weibo_mid = url_to_mid(weibo_url)
   weibo_uid = weibo_link.split('/')[-2]
+
   headers = {
     "host": "weibo.com",
     "referer": 'https://weibo.com/' + weibo_uid + '/' + weibo_url,
@@ -347,21 +324,19 @@ for weibo_link in weibo_links:
 
   all_weibos = []
   all_weibos.append(getWeibo(weibo_mid, headers))
+  new_weibo_zero_count = 0
 
   seeds = Queue()
   seeds.put([weibo_uid, weibo_mid])
 
   seeds_set = set()
-
   while not seeds.empty():
     a = seeds.get()
     print(a)
     get_repost(a[0], a[1])
 
   final_weibos = clean(all_weibos)
-
   final_weibos.sort(key = timeSort)
-
   print('final_weibos', len(final_weibos), flush = True)
 
   outputFileName = outputFolder + '/' + weibo_url + str(len(final_weibos)) + '.json'
