@@ -39,3 +39,14 @@
 # for node in datalist[1:]:
 #     addNode(root, node)
 # save_json('./tmp.json',root)
+
+
+import random
+
+a = []
+a.insert(-1,0)
+print(a)
+print(len(a))
+print(random.random())
+
+print(random.randint(0,1))

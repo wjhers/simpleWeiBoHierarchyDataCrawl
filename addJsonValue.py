@@ -40,7 +40,7 @@ def recursive(data:dict, str_to_value:str='value'):
             ans['children'].append(ans1)
     else:
         if(str_to_value in data.keys()):
-            ans['value'] = int(data[str_to_value]) if (int(data[str_to_value]) > 1 and int(data[str_to_value]) < 100) else random_value()
+            ans['value'] = random_value() #int(data[str_to_value]) if (int(data[str_to_value]) > 1 and int(data[str_to_value]) < 100) else random_value()
         else:
             ans['value'] = random_value()
     return ans
@@ -69,7 +69,7 @@ def en_name(name:str):
 def random_value():
     value_a = random.gauss(0,1)
     value_b = random.randint(10, 100)
-    return int(value_a * value_b) if (int(value_a * value_b) > 1 and int(value_a * value_b) < 100) else 5
+    return int(value_a * value_b) if (int(value_a * value_b) > 1 and int(value_a * value_b) < 100) else random.randint(10, 30)
 
 
 def addJsonValue(source):

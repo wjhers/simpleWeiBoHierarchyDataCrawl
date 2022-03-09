@@ -93,7 +93,6 @@ def url_to_mid(url):
 
 def clean(weibos):
   # weibo 去重，a -> b ->c
-  # c 先在a里面加入了，然后又在b里面加入了
   midset = set()
   index = len(weibos) - 1
   new_weibos = []
@@ -124,69 +123,73 @@ def getLongText(mid, headers):
 
 def reponseInfo2Dict(mid, mblog):
   weibo = {}
-  weibo['visible_type'] = mblog.get('visible').get('type')
-  weibo['visible_list_id'] = mblog.get('visible').get('list_id')
-  weibo['time'] = formatTime(mblog.get('created_at'))
+  data_w = {}
+  data_w['visible_type'] = mblog.get('visible').get('type')
+  data_w['visible_list_id'] = mblog.get('visible').get('list_id')
+  data_w['time'] = formatTime(mblog.get('created_at'))
+
   # weibo['id'] = mblog.get('id')
   # weibo['idstr'] = mblog.get('idstr') # id, idstr and mid are the same
   weibo['mid'] = mblog.get('mid')
   weibo['mblogid'] = mblog.get('mblogid')
-
   weibo['uid'] = mblog.get('user').get('id')
   weibo['name'] = mblog.get('user').get('screen_name')
-  weibo['profile_image_url'] = mblog.get('user').get('profile_image_url')
-  weibo['profile_url'] = mblog.get('user').get('profile_url')
-  weibo['verified'] = mblog.get('user').get('verified')
-  weibo['verified_type'] = mblog.get('user').get('verified_type')
-  weibo['domain'] = mblog.get('user').get('domain')
-  weibo['weihao'] = mblog.get('user').get('weihao')
-  weibo['verified_type_ext'] = mblog.get('user').get('verified_type_ext')
-  weibo['avatar_large'] = mblog.get('user').get('avatar_large')
-  weibo['avatar_hd'] = mblog.get('user').get('avatar_hd')
-  weibo['follow_me'] = mblog.get('user').get('follow_me')
-  weibo['following'] = mblog.get('user').get('following')
-  weibo['mbrank'] = mblog.get('user').get('mbrank')
-  weibo['mbtype'] = mblog.get('user').get('mbtype')
-  weibo['planet_video'] = mblog.get('user').get('planet_video')
-  weibo['planet_video'] = mblog.get('user').get('planet_video')
-  weibo['icon_list'] = mblog.get('user').get('icon_list')
 
-  weibo['can_edit'] = mblog.get('can_edit')
-  weibo['textLength'] = mblog.get('textLength')
-  weibo['source'] = mblog.get('source')
-  weibo['favorited'] = mblog.get('favorited')
-  weibo['cardid'] = mblog.get('cardid')
-  weibo['cardid'] = mblog.get('cardid')
-  weibo['pic_ids'] = mblog.get('pic_ids')
-  weibo['geo'] = mblog.get('geo')
-  weibo['pic_num'] = mblog.get('pic_num')
-  weibo['is_paid'] = mblog.get('is_paid')
-  weibo['mblog_vip_type'] = mblog.get('mblog_vip_type')
-  weibo['reposts_count'] = mblog.get('reposts_count')
-  weibo['comments_count'] = mblog.get('comments_count')
-  weibo['attitudes_count'] = mblog.get('attitudes_count')
-  weibo['attitudes_status'] = mblog.get('attitudes_status')
-  weibo['isLongText'] = mblog.get('isLongText')
-  weibo['mlevel'] = mblog.get('mlevel')
-  weibo['content_auth'] = mblog.get('content_auth')
-  weibo['is_show_bulletin'] = mblog.get('is_show_bulletin')
-  weibo['mblogtype'] = mblog.get('mblogtype')
-  weibo['showFeedRepost'] = mblog.get('showFeedRepost')
-  weibo['showFeedComment'] = mblog.get('showFeedComment')
-  weibo['pictureViewerSign'] = mblog.get('pictureViewerSign')
-  weibo['showPictureViewer'] = mblog.get('showPictureViewer')
-  weibo['repost_type'] = mblog.get('repost_type')
-  weibo['repost_type'] = mblog.get('repost_type')
-  weibo['share_repost_type'] = mblog.get('share_repost_type')
+  data_w['profile_image_url'] = mblog.get('user').get('profile_image_url')
+  data_w['profile_url'] = mblog.get('user').get('profile_url')
+  data_w['verified'] = mblog.get('user').get('verified')
+  data_w['verified_type'] = mblog.get('user').get('verified_type')
+  data_w['domain'] = mblog.get('user').get('domain')
+  data_w['weihao'] = mblog.get('user').get('weihao')
+  data_w['verified_type_ext'] = mblog.get('user').get('verified_type_ext')
+  data_w['avatar_large'] = mblog.get('user').get('avatar_large')
+  data_w['avatar_hd'] = mblog.get('user').get('avatar_hd')
+  data_w['follow_me'] = mblog.get('user').get('follow_me')
+  data_w['following'] = mblog.get('user').get('following')
+  data_w['mbrank'] = mblog.get('user').get('mbrank')
+  data_w['mbtype'] = mblog.get('user').get('mbtype')
+  data_w['planet_video'] = mblog.get('user').get('planet_video')
+  data_w['planet_video'] = mblog.get('user').get('planet_video')
+  data_w['icon_list'] = mblog.get('user').get('icon_list')
 
-  weibo['text'] = mblog.get('text_raw')
+  data_w['can_edit'] = mblog.get('can_edit')
+  data_w['textLength'] = mblog.get('textLength')
+  data_w['source'] = mblog.get('source')
+  data_w['favorited'] = mblog.get('favorited')
+  data_w['cardid'] = mblog.get('cardid')
+  data_w['cardid'] = mblog.get('cardid')
+  data_w['pic_ids'] = mblog.get('pic_ids')
+  data_w['geo'] = mblog.get('geo')
+  data_w['pic_num'] = mblog.get('pic_num')
+  data_w['is_paid'] = mblog.get('is_paid')
+  data_w['mblog_vip_type'] = mblog.get('mblog_vip_type')
+  data_w['reposts_count'] = mblog.get('reposts_count')
+  data_w['comments_count'] = mblog.get('comments_count')
+  data_w['attitudes_count'] = mblog.get('attitudes_count')
+  data_w['attitudes_status'] = mblog.get('attitudes_status')
+  data_w['isLongText'] = mblog.get('isLongText')
+  data_w['mlevel'] = mblog.get('mlevel')
+  data_w['content_auth'] = mblog.get('content_auth')
+  data_w['is_show_bulletin'] = mblog.get('is_show_bulletin')
+  data_w['mblogtype'] = mblog.get('mblogtype')
+  data_w['showFeedRepost'] = mblog.get('showFeedRepost')
+  data_w['showFeedComment'] = mblog.get('showFeedComment')
+  data_w['pictureViewerSign'] = mblog.get('pictureViewerSign')
+  data_w['showPictureViewer'] = mblog.get('showPictureViewer')
+  data_w['repost_type'] = mblog.get('repost_type')
+  data_w['repost_type'] = mblog.get('repost_type')
+  data_w['share_repost_type'] = mblog.get('share_repost_type')
+
+  data_w['text'] = mblog.get('text_raw')
   if mblog.get('isLongText'):
     long_text = getLongText(mid, headers)
     if long_text is not None:
-      weibo['text'] = removeHyperlinks(long_text)
+      data_w['text'] = removeHyperlinks(long_text)
 
   if mblog.get('reads_count'):
-    weibo['reads_count'] = mblog.get('reads_count')
+    data_w['reads_count'] = mblog.get('reads_count')
+  
+  weibo['data'] = data_w
 
   return weibo
 
@@ -294,7 +297,7 @@ def get_repost(uid, mid):
     print(e)
 
 def timeSort(ele):
-  return ele['time']
+  return ele['data']['time']
 
 outputFolder = 'repost/'
 if not os.path.exists(outputFolder):
@@ -316,9 +319,6 @@ for weibo_link in weibo_links:
     "referer": 'https://weibo.com/' + weibo_uid + '/' + weibo_url,
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/98.0.4758.102 Safari/537.36 Edg/98.0.1108.62",
     "X-Requested-With": "XMLHttpRequest",
-    # "Connection": "keep-alive",
-    # "cookie": "SINAGLOBAL=7734682608780.217.1646061411766; SSOLoginState=1646114748; SUB=_2A25PGcfsDeRhGeFM71IQ8CjNzjuIHXVs5emkrDV8PUJbkNAKLWLdkW1NQMaAsDNb1Vx7Aknn0dOcx3Q4YFNSIwYo; SUBP=0033WrSXqPxfM725Ws9jqgMF55529P9D9W5TJwnjDPbUTrv6-o6GTRi65NHD95QNeoB7eK5ceK-NWs4Dqcjdi--fiK.7i-zXi--fi-82i-20i--RiKy2i-zN; XSRF-TOKEN=cKFBbFnkLbBdI9yqmP2IcMEr; _s_tentry=weibo.com; Apache=8764286467942.853.1646126060538; ULV=1646126060566:2:1:2:8764286467942.853.1646126060538:1646061411774; trdipcktrffcext=1; WBPSESS=Yd3BHei0Ouk_WjPV5pHB2jcZdi1sNpW6Fv385DTeZor-JBFuOmvuOf0bYOmfJfuCylgA_dPMdE7DuKZXuhtpy7SEv900AXWYggrXLrCAK6Gq1Cda1A1sIpPf1tb9MctmWdskh336eXxP-_KEQFmGPg=="
-    # "cookie": "SINAGLOBAL=3844073175642.917.1646038927204; ULV=1646038927210:1:1:1:3844073175642.917.1646038927204:; ALF=1677575089; SSOLoginState=1646039089; SUB=_2A25PGOBhDeRhGeFM71IQ8CjNzjuIHXVsbFaprDV8PUNbmtAKLRLQkW9NQMaAsEQm7Z-THVd8lEvJAVF1L8TfsStE; SUBP=0033WrSXqPxfM725Ws9jqgMF55529P9D9W5TJwnjDPbUTrv6-o6GTRi65JpX5KzhUgL.FoMESh5pehqpSKM2dJLoIpjLxK-L1K5LBoBLxK-LB-BLBKeLxKnL12BLBoMt; XSRF-TOKEN=SQlqZOqYROWj9jQ46UcFm_S_; WBPSESS=Yd3BHei0Ouk_WjPV5pHB2jcZdi1sNpW6Fv385DTeZor-JBFuOmvuOf0bYOmfJfuC_oiNE0xuuBJVkOgbf7MaqDR7Qz9buefW7SSfh2CDXHKvJb5DnczIxg6YQLd8J0S6opt-2cBdbO29PFSWyXN-oQ=="
     "cookie": "SINAGLOBAL=7987140213946.333.1605197641875; ULV=1634042457745:13:1:1:9576227501281.14.1634042457599:1629965688140; UOR=www.baidu.com,open.weibo.com,graph.qq.com; SUBP=0033WrSXqPxfM725Ws9jqgMF55529P9D9W52RrXUDmguX9ziQ3WqVIvK5JpX5KMhUgL.Foz0So.p1Kq0eo22dJLoIERLxKqL1h.L12zLxKqL1-eLB.2LxKML1KBLBKnLxKqL1hnLBoMEe0q4eK.ce0zp; ALF=1670984896; SSOLoginState=1639448897; SCF=At0UCYTaVqZdpgptq7SljVF9oPcWVnVo1vpzYbKpbsYdUhWfJo4ebQkmKG13djiO1EvkNNlBxc28AOu3NyNla7Q.; SUB=_2A25MvHESDeRhGeRN7VsQ-SjPyT2IHXVvyOXarDV8PUNbmtAKLVjWkW9NU5xMaaFQMY6v_Ea76IKUbqFDW63CQcuF; XSRF-TOKEN=PmuMolp20oh352q43nj9LcJX; WBPSESS=oaqfGpuBr7-UtSFsCHFHSt5RxL-hYYU20puv2cqW1qVBK96zsIx7SS3-E5l8Mt_rOXUxi71lSsdyfYHpgM98bw3_gJkws4d95T9eniXCEHgn6ZFOmXqgr_8MNFTEl2ZvTqfac5MrTHtBjPjeTYGtEA=="
   }
 

@@ -20,7 +20,10 @@ def addInitNode(parent, node):
         node['pid'] = parent['mid']
         if 'children' not in parent.keys():
             parent['children'] = []
-        parent['children'].append(node)
+        # parent['children'].append(node)
+        # 添加元素
+        tmp_len = 0 if len(parent['children'])==0 else  len(parent['children']) - 1
+        parent['children'].insert(random.randint(0, tmp_len),node)
         return True
     else:
         if 'children' not in parent.keys():
@@ -52,7 +55,14 @@ def addOtherNode(parent, node, depth):
         node['mid'] = parent['mid'] + 1
         if 'children' not in parent.keys():
             parent['children'] = []
-        parent['children'].append(node)
+        # 添加元素
+        if(random.random()<=0.5):
+            # 列表末尾添加
+            parent['children'].append(node)
+        else:
+            # 列表随机一个位置添加
+            tmp_len = 0 if len(parent['children'])==0 else  len(parent['children']) - 1
+            parent['children'].insert(random.randint(0, tmp_len),node)
         return True
     else:
         if 'children' not in parent.keys():
@@ -91,13 +101,13 @@ def randomJson(namelen, depth, nodesize):
 # 随机生成10条数据 高度2-6 节点名称长度5-15 节点个数20-250 命名方式为 根节点名称+深度.json
 
 for i in range(10):
-    depth = random.randint(2, 6)
-    namelength = random.randint(5, 15)
-    nodesize = random.randint(20, 250)
+    depth = random.randint(4, 6)
+    namelength = random.randint(5, 10)
+    nodesize = random.randint(40, 120)
     root, rootname = randomJson(namelen=namelength, depth=depth, nodesize=nodesize)
     filename = './randjson/'+rootname+"_"+str(depth)+"_"+str(nodesize)+ '.json'
     save_json(filename=filename, savedata=root)
 
 
-# source = './randjson'
-# addJsonValue(source=source)
+source = './randjson'
+addJsonValue(source=source)
