@@ -35,16 +35,25 @@ def save_json(filename, savedata):
     json.dump(savedata, outputFile, ensure_ascii=False)
     outputFile.close()
 
-Index = 0
+
 def recursive(data:dict):
-    data['name'] = en_name(data['name'], 1)
-    data['data']['source'] = en_name(data['data']['source'], 0)
+    # data['name'] = en_name(data['name'], 1)
+    # data['data']['source'] = en_name(data['data']['source'], 0)
+    # 生成唯一的节点id索引
+    data['data']['nodeIndex'] = encodingIndex()
     if('children' in data.keys()) and len(data['children']):
         for element in data['children']:
             recursive(element)
     return data
 
 
+nodeIndex = -1
+def encodingIndex():
+    global nodeIndex
+    nodeIndex = nodeIndex + 1
+    return nodeIndex
+
+Index = 0
 def en_name(name:str, addIndex):
     global Index
     # Chinese Japanese
@@ -63,5 +72,5 @@ def en_name(name:str, addIndex):
 
 
 
-data = load_json('./WeiBoJson.json')
-save_json('./WeiBoJson1.json', savedata=data)
+data = load_json('./draw.json')
+save_json('./draw1.json', savedata=data)
