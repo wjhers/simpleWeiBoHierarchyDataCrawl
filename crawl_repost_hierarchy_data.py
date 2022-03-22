@@ -18,7 +18,7 @@ from queue import Queue
 from crawl_HotPoints_Links import get_repost_1
 
 ALPHABET = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
- 
+
 def base62_encode(num, alphabet=ALPHABET):
     """Encode a number in Base X
     `num`: The number to encode
@@ -163,7 +163,7 @@ def reponseInfo2Dict(mid, mblog):
   data_w['pic_num'] = mblog.get('pic_num')
   data_w['is_paid'] = mblog.get('is_paid')
   data_w['mblog_vip_type'] = mblog.get('mblog_vip_type')
-  data_w['reposts_count'] = mblog.get('reposts_count')
+  # data_w['reposts_count'] = mblog.get('reposts_count')
   data_w['comments_count'] = mblog.get('comments_count')
   data_w['attitudes_count'] = mblog.get('attitudes_count')
   data_w['attitudes_status'] = mblog.get('attitudes_status')
@@ -242,7 +242,8 @@ def parse_data(data, pid):
       # if 'retweeted_status' in mblog:
       #   weibo['pid'] = mblog.get('retweeted_status').get('mid') 这里的mid保存的还是原始根的id
 
-      if weibo['reposts_count'] > 0 and not (weibo['mid'] in seeds_set):
+      # if weibo['reposts_count'] > 0 and not (weibo['mid'] in seeds_set):
+      if not (weibo['mid'] in seeds_set):
         # 原始注释：不用爬子微博的转发，全部微博的转发，包括子微博
         # 当前注释：需要爬取微博转发，因为需要标记父子节点
         seeds_set.add(weibo['mid'])
@@ -304,7 +305,7 @@ if not os.path.exists(outputFolder):
   os.mkdir(outputFolder)
 
 saveFilePath = './hotlinks/link.csv'
-# get_repost_1(limit_pages=40,filepath=saveFilePath)
+get_repost_1(limit_pages=10,filepath=saveFilePath)
 df = pd.read_csv(saveFilePath)
 weibo_links = df['hotlink'].values.tolist()
 
