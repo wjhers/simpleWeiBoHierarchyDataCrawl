@@ -2,6 +2,7 @@
 # -*- coding:utf-8 -*-
 # Fixed by:wjher
 # reference: https://blog.csdn.net/HandsomeFishman
+# 2022/03/23
 
 import requests
 from urllib.parse import urlencode
@@ -14,7 +15,6 @@ import random
 import datetime
 import pandas as pd
 from queue import Queue
-
 from crawl_HotPoints_Links import get_repost_1
 
 ALPHABET = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
@@ -121,7 +121,27 @@ def getLongText(mid, headers):
     print('Error', e.args, flush = True)
   return None
 
-def reponseInfo2Dict(mid, mblog):
+def getUserInfo(uid, headers):
+  text_url = "https://weibo.com/ajax/profile/info?uid=" + str(uid)
+  try:
+    response = requests.get(url = text_url, headers = headers)
+    if response.status_code == 200:
+      return response.json().get('data')
+  except requests.ConnectionError as e:
+    print('Error', e.args, flush = True)
+  return None
+
+def getUserDetail(uid, headers):
+  text_url = "https://weibo.com/ajax/profile/detail?uid=" + str(uid)
+  try:
+    response = requests.get(url = text_url, headers = headers)
+    if response.status_code == 200:
+      return response.json().get('data')
+  except requests.ConnectionError as e:
+    print('Error', e.args, flush = True)
+  return None
+
+def reponseInfo2Dict(mid, uid, mblog):
   weibo = {}
   data_w = {}
   data_w['visible_type'] = mblog.get('visible').get('type')
@@ -189,6 +209,23 @@ def reponseInfo2Dict(mid, mblog):
   if mblog.get('reads_count'):
     data_w['reads_count'] = mblog.get('reads_count')
   
+  tmpheaders = {
+    "host": "weibo.com",
+    "referer": 'https://weibo.com/u/' + str(uid),
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/98.0.4758.102 Safari/537.36 Edg/98.0.1108.62",
+    "X-Requested-With": "XMLHttpRequest",
+    "cookie": "SINAGLOBAL=3844073175642.917.1646038927204; UOR=cn.bing.com,weibo.com,cn.bing.com; SUBP=0033WrSXqPxfM725Ws9jqgMF55529P9D9W5TJwnjDPbUTrv6-o6GTRi65JpX5KMhUgL.FoMESh5pehqpSKM2dJLoIpjLxK-L1K5LBoBLxK-LB-BLBKeLxKnL12BLBoMt; ULV=1648019064084:6:5:1:1626688394416.8887.1648019064073:1646318591445; ALF=1679563332; SSOLoginState=1648027333; SCF=Aky-rPXlPAOdGHx5MXGs4_kz0np45_lz7NkbNClQWg5AXrG7V021uZHdP9oLWozIexx_x0UsHlhdAKCp9lekzrY.; SUB=_2A25PPpaYDeRhGeFM71IQ8CjNzjuIHXVsTY9QrDV8PUNbmtAKLXikkW9NQMaAsGwx_HL3RGuup6TWf0MmFYKnOZsW; XSRF-TOKEN=BGBJHbLTh2-lFTLNp8D9eEcq; WBPSESS=Yd3BHei0Ouk_WjPV5pHB2jcZdi1sNpW6Fv385DTeZor-JBFuOmvuOf0bYOmfJfuCGUqCXlyhNDqqfipi4m2gPmBe4nRE39OsBFuG4aQkkV_-tlQPi5sME-dCBXAWem4slHWQX9YpaoXz_yHXrKxHZA=="
+  }
+  
+  userInfo = getUserInfo(uid, tmpheaders)
+  print('userInfo', userInfo)
+  if userInfo is not None:
+    data_w['userInfo'] = userInfo
+  
+  userDetail = getUserDetail(uid, tmpheaders)
+  if userDetail is not None:
+    data_w['userDetail'] = userDetail
+  
   weibo['data'] = data_w
 
   return weibo
@@ -196,13 +233,13 @@ def reponseInfo2Dict(mid, mblog):
 
 # select a initial page https://weibo.com/2656274875/LdOT4awvY 
 # on the page https://weibo.com/2656274875/LdOT4awvY type F12 to view the responses of the link "https://weibo.com/ajax/statuses/show?id="
-def getWeibo(mid, headers):
+def getWeibo(mid, uid, headers):
   url = "https://weibo.com/ajax/statuses/show?id=" + mid
   try:
     response = requests.get(url = url, headers = headers)
     if response.status_code == 200:
       mblog = response.json()
-      weibo = reponseInfo2Dict(mid, mblog)
+      weibo = reponseInfo2Dict(mid, uid, mblog)
       return weibo
     else:
       print(response.status_code, response.content, flush = True)
@@ -236,7 +273,8 @@ def parse_data(data, pid):
   for mblog in lists:
     if mblog:
       mid = mblog.get('mid')
-      weibo = reponseInfo2Dict(mid, mblog)
+      uid = mblog.get('user').get('id')
+      weibo = reponseInfo2Dict(mid, uid, mblog)
       weibo['pid'] = pid # parent id
 
       # if 'retweeted_status' in mblog:
@@ -305,7 +343,7 @@ if not os.path.exists(outputFolder):
   os.mkdir(outputFolder)
 
 saveFilePath = './hotlinks/link.csv'
-get_repost_1(limit_pages=10,filepath=saveFilePath)
+# get_repost_1(limit_pages=10,filepath=saveFilePath)
 df = pd.read_csv(saveFilePath)
 weibo_links = df['hotlink'].values.tolist()
 
@@ -313,18 +351,18 @@ weibo_links = df['hotlink'].values.tolist()
 for weibo_link in weibo_links:
   weibo_url = weibo_link.split('/')[-1]
   weibo_mid = url_to_mid(weibo_url)
-  weibo_uid = weibo_link.split('/')[-2]
+  weibo_uid = int(weibo_link.split('/')[-2])
 
   headers = {
     "host": "weibo.com",
-    "referer": 'https://weibo.com/' + weibo_uid + '/' + weibo_url,
+    "referer": 'https://weibo.com/' + str(weibo_uid) + '/' + weibo_url,
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/98.0.4758.102 Safari/537.36 Edg/98.0.1108.62",
     "X-Requested-With": "XMLHttpRequest",
     "cookie": "SINAGLOBAL=7987140213946.333.1605197641875; ULV=1634042457745:13:1:1:9576227501281.14.1634042457599:1629965688140; UOR=www.baidu.com,open.weibo.com,graph.qq.com; SUBP=0033WrSXqPxfM725Ws9jqgMF55529P9D9W52RrXUDmguX9ziQ3WqVIvK5JpX5KMhUgL.Foz0So.p1Kq0eo22dJLoIERLxKqL1h.L12zLxKqL1-eLB.2LxKML1KBLBKnLxKqL1hnLBoMEe0q4eK.ce0zp; ALF=1670984896; SSOLoginState=1639448897; SCF=At0UCYTaVqZdpgptq7SljVF9oPcWVnVo1vpzYbKpbsYdUhWfJo4ebQkmKG13djiO1EvkNNlBxc28AOu3NyNla7Q.; SUB=_2A25MvHESDeRhGeRN7VsQ-SjPyT2IHXVvyOXarDV8PUNbmtAKLVjWkW9NU5xMaaFQMY6v_Ea76IKUbqFDW63CQcuF; XSRF-TOKEN=PmuMolp20oh352q43nj9LcJX; WBPSESS=oaqfGpuBr7-UtSFsCHFHSt5RxL-hYYU20puv2cqW1qVBK96zsIx7SS3-E5l8Mt_rOXUxi71lSsdyfYHpgM98bw3_gJkws4d95T9eniXCEHgn6ZFOmXqgr_8MNFTEl2ZvTqfac5MrTHtBjPjeTYGtEA=="
   }
 
   all_weibos = []
-  all_weibos.append(getWeibo(weibo_mid, headers))
+  all_weibos.append(getWeibo(weibo_mid, weibo_uid, headers))
   new_weibo_zero_count = 0
 
   seeds = Queue()

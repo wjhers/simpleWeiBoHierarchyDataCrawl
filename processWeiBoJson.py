@@ -37,10 +37,11 @@ def save_json(filename, savedata):
 
 
 def recursive(data:dict):
-    # data['name'] = en_name(data['name'], 1)
-    # data['data']['source'] = en_name(data['data']['source'], 0)
+    data['name'] = en_name(data['name'], 0)
+    data['data']['source'] = en_name(data['data']['source'], 0)
     # 生成唯一的节点id索引
     data['data']['nodeIndex'] = encodingIndex()
+    data['data']['geo'] = encodingGeo()
     if('children' in data.keys()) and len(data['children']):
         for element in data['children']:
             recursive(element)
@@ -52,6 +53,15 @@ def encodingIndex():
     global nodeIndex
     nodeIndex = nodeIndex + 1
     return nodeIndex
+
+def encodingGeo():
+    provinces = ['Anhui','Beijing', 'Chongqing','Fujian','Gansu','Guangdong','Guangxi',
+    'Guizhou','Hainan','Hebei','Henan','Heilongjiang','Hubei','Hunan','Jilin','Jiangsu',
+    'Jiangxi','Liaoning','Inner Mongoria','Ningxia','Qinghai','Shangdong','Shanxi',
+    'Shaanxi','Shanghai','Sichuan','Tianjin','Tibet','Xinjiang','Yunnan','Zhejiang',
+    'Macao','Hong Kong','Taiwan']
+    return random.choice(provinces)
+    # pass
 
 Index = 0
 def en_name(name:str, addIndex):
@@ -72,5 +82,5 @@ def en_name(name:str, addIndex):
 
 
 
-data = load_json('./draw.json')
-save_json('./draw1.json', savedata=data)
+data = load_json('./LkBSYdhE3235_1.json')
+save_json('./LkBSYdhE3235_2.json', savedata=data)
