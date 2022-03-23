@@ -144,68 +144,65 @@ def getUserDetail(uid, headers):
 def reponseInfo2Dict(mid, uid, mblog):
   weibo = {}
   data_w = {}
-  data_w['visible_type'] = mblog.get('visible').get('type')
-  data_w['visible_list_id'] = mblog.get('visible').get('list_id')
-  data_w['time'] = formatTime(mblog.get('created_at'))
-
-  # weibo['id'] = mblog.get('id')
-  # weibo['idstr'] = mblog.get('idstr') # id, idstr and mid are the same
+  
   weibo['mid'] = mblog.get('mid')
   weibo['mblogid'] = mblog.get('mblogid')
   weibo['uid'] = mblog.get('user').get('id')
   weibo['name'] = mblog.get('user').get('screen_name')
 
-  data_w['profile_image_url'] = mblog.get('user').get('profile_image_url')
-  data_w['profile_url'] = mblog.get('user').get('profile_url')
-  data_w['verified'] = mblog.get('user').get('verified')
+
+  data_w['visible_type'] = mblog.get('visible').get('type')
+  data_w['visible_list_id'] = mblog.get('visible').get('list_id')
+  data_w['time'] = formatTime(mblog.get('created_at')).split(':')[0] + ':00:00' #发布时间按照小时划分
+
+  # data_w['profile_image_url'] = mblog.get('user').get('profile_image_url')
+  # data_w['profile_url'] = mblog.get('user').get('profile_url')
+  data_w['verified'] = 1 if mblog.get('user').get('verified') else 0 #微博是否认证{0,1}
   data_w['verified_type'] = mblog.get('user').get('verified_type')
-  data_w['domain'] = mblog.get('user').get('domain')
-  data_w['weihao'] = mblog.get('user').get('weihao')
-  data_w['verified_type_ext'] = mblog.get('user').get('verified_type_ext')
-  data_w['avatar_large'] = mblog.get('user').get('avatar_large')
-  data_w['avatar_hd'] = mblog.get('user').get('avatar_hd')
-  data_w['follow_me'] = mblog.get('user').get('follow_me')
-  data_w['following'] = mblog.get('user').get('following')
+  data_w['domain'] = mblog.get('user').get('domain') if len(mblog.get('user').get('domain')) else '-' #domain为""赋值为'-'
+  data_w['weihao'] = mblog.get('user').get('weihao') if len(mblog.get('user').get('weihao')) else '-'
+  data_w['verified_type_ext'] = mblog.get('user').get('verified_type_ext') if(mblog.get('user').get('verified_type_ext')) else -1
+  # data_w['avatar_large'] = mblog.get('user').get('avatar_large')
+  # data_w['avatar_hd'] = mblog.get('user').get('avatar_hd')
+  data_w['follow_me'] = 1 if mblog.get('user').get('follow_me') else 0 #{0,1}
+  data_w['following'] = 1 if mblog.get('user').get('following') else 0 #{0,1}
   data_w['mbrank'] = mblog.get('user').get('mbrank')
   data_w['mbtype'] = mblog.get('user').get('mbtype')
-  data_w['planet_video'] = mblog.get('user').get('planet_video')
-  data_w['planet_video'] = mblog.get('user').get('planet_video')
-  data_w['icon_list'] = mblog.get('user').get('icon_list')
+  data_w['planet_video'] = 1 if mblog.get('user').get('planet_video') else 0 #{0,1}
+  data_w['icon_list'] = len(mblog.get('user').get('icon_list')) #len(icon_list)
 
-  data_w['can_edit'] = mblog.get('can_edit')
+  data_w['can_edit'] = 1 if mblog.get('can_edit') else 0 #{0,1}
   data_w['textLength'] = mblog.get('textLength')
   data_w['source'] = mblog.get('source')
-  data_w['favorited'] = mblog.get('favorited')
-  data_w['cardid'] = mblog.get('cardid')
-  data_w['cardid'] = mblog.get('cardid')
-  data_w['pic_ids'] = mblog.get('pic_ids')
-  data_w['geo'] = mblog.get('geo')
+  data_w['favorited'] = 1 if mblog.get('favorited') else 0 #{0,1}
+  data_w['cardid'] = mblog.get('cardid') if(mblog.get('cardid')) else '-'
+  # data_w['pic_ids'] = mblog.get('pic_ids')
+  data_w['geo'] = mblog.get('geo') if(mblog.get('geo')) else '-'
   data_w['pic_num'] = mblog.get('pic_num')
-  data_w['is_paid'] = mblog.get('is_paid')
+  data_w['is_paid'] = 1 if mblog.get('is_paid') else 0
   data_w['mblog_vip_type'] = mblog.get('mblog_vip_type')
   # data_w['reposts_count'] = mblog.get('reposts_count')
   data_w['comments_count'] = mblog.get('comments_count')
   data_w['attitudes_count'] = mblog.get('attitudes_count')
   data_w['attitudes_status'] = mblog.get('attitudes_status')
-  data_w['isLongText'] = mblog.get('isLongText')
+  data_w['isLongText'] = 1 if mblog.get('isLongText') else 0 #{0,1}
   data_w['mlevel'] = mblog.get('mlevel')
   data_w['content_auth'] = mblog.get('content_auth')
   data_w['is_show_bulletin'] = mblog.get('is_show_bulletin')
   data_w['mblogtype'] = mblog.get('mblogtype')
-  data_w['showFeedRepost'] = mblog.get('showFeedRepost')
-  data_w['showFeedComment'] = mblog.get('showFeedComment')
-  data_w['pictureViewerSign'] = mblog.get('pictureViewerSign')
-  data_w['showPictureViewer'] = mblog.get('showPictureViewer')
-  data_w['repost_type'] = mblog.get('repost_type')
+  data_w['showFeedRepost'] = 1 if mblog.get('showFeedRepost') else 0
+  data_w['showFeedComment'] = 1 if mblog.get('showFeedComment') else 0
+  data_w['pictureViewerSign'] = 1 if mblog.get('pictureViewerSign') else 0
+  data_w['showPictureViewer'] = 1 if mblog.get('showPictureViewer') else 0
   data_w['repost_type'] = mblog.get('repost_type')
   data_w['share_repost_type'] = mblog.get('share_repost_type')
 
-  data_w['text'] = mblog.get('text_raw')
-  if mblog.get('isLongText'):
-    long_text = getLongText(mid, headers)
-    if long_text is not None:
-      data_w['text'] = removeHyperlinks(long_text)
-
+  # data_w['text'] = mblog.get('text_raw')
+  # if mblog.get('isLongText'):
+  #   long_text = getLongText(mid, headers)
+  #   if long_text is not None:
+  #     data_w['text'] = removeHyperlinks(long_text)
+  data_w['reads_count'] = 0
   if mblog.get('reads_count'):
     data_w['reads_count'] = mblog.get('reads_count')
   
@@ -217,14 +214,38 @@ def reponseInfo2Dict(mid, uid, mblog):
     "cookie": "SINAGLOBAL=3844073175642.917.1646038927204; UOR=cn.bing.com,weibo.com,cn.bing.com; SUBP=0033WrSXqPxfM725Ws9jqgMF55529P9D9W5TJwnjDPbUTrv6-o6GTRi65JpX5KMhUgL.FoMESh5pehqpSKM2dJLoIpjLxK-L1K5LBoBLxK-LB-BLBKeLxKnL12BLBoMt; ULV=1648019064084:6:5:1:1626688394416.8887.1648019064073:1646318591445; ALF=1679563332; SSOLoginState=1648027333; SCF=Aky-rPXlPAOdGHx5MXGs4_kz0np45_lz7NkbNClQWg5AXrG7V021uZHdP9oLWozIexx_x0UsHlhdAKCp9lekzrY.; SUB=_2A25PPpaYDeRhGeFM71IQ8CjNzjuIHXVsTY9QrDV8PUNbmtAKLXikkW9NQMaAsGwx_HL3RGuup6TWf0MmFYKnOZsW; XSRF-TOKEN=BGBJHbLTh2-lFTLNp8D9eEcq; WBPSESS=Yd3BHei0Ouk_WjPV5pHB2jcZdi1sNpW6Fv385DTeZor-JBFuOmvuOf0bYOmfJfuCGUqCXlyhNDqqfipi4m2gPmBe4nRE39OsBFuG4aQkkV_-tlQPi5sME-dCBXAWem4slHWQX9YpaoXz_yHXrKxHZA=="
   }
   
+  data_w['pc_new'] = -1 #-1表示未知
+  data_w['location'] = '-' #-表示未知
+  data_w['gender'] = '-' #-表示未设置
+  data_w['followers_count'] = 0 #粉丝数0
+  data_w['followers_count_str'] = '-' 
+  data_w['friends_count'] = 0 #朋友数0
+  data_w['statuses_count'] = 0 #微博总数0
+  data_w['user_type'] = -1 #-1表示未知
+
   userInfo = getUserInfo(uid, tmpheaders)
-  print('userInfo', userInfo)
   if userInfo is not None:
-    data_w['userInfo'] = userInfo
+    # data_w['userInfo'] = userInfo
+    data_w['pc_new'] = userInfo['user']['pc_new']
+    data_w['location'] = userInfo['user']['location']
+    data_w['gender'] = userInfo['user']['gender']
+    data_w['followers_count'] = userInfo['user']['followers_count']
+    data_w['followers_count_str'] = userInfo['user']['followers_count_str']
+    data_w['friends_count'] = userInfo['user']['friends_count']
+    data_w['statuses_count'] = userInfo['user']['statuses_count']
+    data_w['user_type'] = userInfo['user']['user_type']
+  
+  # data_w['created_at'] 表示用户创建时间
+  data_w['created_at'] = '00-00-00' #表示初始化
+  data_w['region'] = '-' #-表示未知
+  data_w['edu'] = '-' #表示未知
   
   userDetail = getUserDetail(uid, tmpheaders)
   if userDetail is not None:
-    data_w['userDetail'] = userDetail
+    # data_w['userDetail'] = userDetail
+    data_w['created_at'] = userDetail['created_at'].split(' ')[0]
+    data_w['region'] = userDetail['region']
+    data_w['edu'] = userDetail['education']['school'] if (userDetail['education']) else '-'
   
   weibo['data'] = data_w
 
