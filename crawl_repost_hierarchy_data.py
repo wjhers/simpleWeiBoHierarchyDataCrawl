@@ -239,13 +239,15 @@ def reponseInfo2Dict(mid, uid, mblog):
   data_w['created_at'] = '00-00-00' #表示初始化
   data_w['region'] = '-' #-表示未知
   data_w['edu'] = '-' #表示未知
+  data_w['career'] = '-'
   
   userDetail = getUserDetail(uid, tmpheaders)
   if userDetail is not None:
     # data_w['userDetail'] = userDetail
     data_w['created_at'] = userDetail['created_at'].split(' ')[0]
-    data_w['region'] = userDetail['region']
-    data_w['edu'] = userDetail['education']['school'] if (userDetail['education']) else '-'
+    data_w['region'] = userDetail['region'] if 'region' in userDetail else '-'
+    data_w['career'] = userDetail['career']['company'] if 'career' in userDetail else '-'
+    data_w['edu'] = userDetail['education']['school'] if 'education' in userDetail else '-'
   
   weibo['data'] = data_w
 
