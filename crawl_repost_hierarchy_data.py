@@ -366,7 +366,7 @@ if not os.path.exists(outputFolder):
   os.mkdir(outputFolder)
 
 saveFilePath = './hotlinks/link.csv'
-get_repost_1(limit_pages=10,filepath=saveFilePath)
+# get_repost_1(limit_pages=10,filepath=saveFilePath)
 df = pd.read_csv(saveFilePath)
 weibo_links = df['hotlink'].values.tolist()
 
