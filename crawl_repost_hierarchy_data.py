@@ -194,7 +194,7 @@ def reponseInfo2Dict(mid, uid, mblog):
   data_w['showFeedComment'] = 1 if mblog.get('showFeedComment') else 0
   data_w['pictureViewerSign'] = 1 if mblog.get('pictureViewerSign') else 0
   data_w['showPictureViewer'] = 1 if mblog.get('showPictureViewer') else 0
-  data_w['repost_type'] = mblog.get('repost_type') if (mblog.get('repost_type')) else '-1'
+  data_w['repost_type'] = mblog.get('repost_type') #if (mblog.get('repost_type')) else '-1'
   data_w['share_repost_type'] = mblog.get('share_repost_type')
 
   # data_w['text'] = mblog.get('text_raw')
