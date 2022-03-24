@@ -30,20 +30,37 @@ def addNode(parent, node):
                 return True
     return False
 
+def findParent(nodeList):
+    ans = []
+    for ele in nodeList:
+        if('pid' not in ele):
+            ans.append(ele)
+    # print(len(ans))
+    return ans[0]
+
+def findChildren(nodeP, datalist):
+    for ele in datalist:
+        if ele['name'] != nodeP['name'] and ele['pid'] == nodeP['mid']:
+            if 'children' not in nodeP.keys():
+                nodeP['children'] = []
+            nodeP['children'].append(ele)
+
 
 def singledata2tree(sourcepath, targetpath):
     datalist = load_json(sourcepath)
-    root = datalist[0]
-    for node in datalist[1:]:
-        addNode(root, node)
+    root = findParent(datalist)
+    # root = datalist[0]
+    for node in datalist:
+        if node['name'] != root['name']:
+            addNode(root, node)
     save_json(targetpath, root)
 
 
 
-source = './repost'
+source = './repost3'
 listdir = os.listdir(source)
 
 
 for path in listdir:
-    # print(source + '/' + path)
-    singledata2tree(source + '/' + path, source + '/' + path)
+    print(source + '/' + path)
+    singledata2tree(source + '/' + path, './repost4' + '/' + path)
