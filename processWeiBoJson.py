@@ -37,11 +37,25 @@ def save_json(filename, savedata):
 
 
 def recursive(data:dict):
+    # name
     data['name'] = en_name(data['name'], 0)
+    # source
     data['data']['source'] = en_name(data['data']['source'], 0)
-    # 生成唯一的节点id索引
-    data['data']['nodeIndex'] = encodingIndex()
+    # time
+    # data['data']['time'] = data['data']['time'] #.split(' ')[0]
+    # id
+    # data['data']['nodeIndex'] = encodingIndex()
+    # 位置
     data['data']['geo'] = encodingGeo()
+    # 性别
+    if(data['data']['gender'] == '-'):
+        data['data']['gender'] = encodingGender()
+    if data['data']['icon_list'] > 0:
+        data['data']['type'] = 'vip'
+    else:
+        data['data']['type'] = 'common'
+
+    
     if('children' in data.keys()) and len(data['children']):
         for element in data['children']:
             recursive(element)
@@ -63,6 +77,10 @@ def encodingGeo():
     return random.choice(provinces)
     # pass
 
+def encodingGender():
+    gender = ['m', 'f']
+    return random.choice(gender)
+
 Index = 0
 def en_name(name:str, addIndex):
     global Index
@@ -82,5 +100,5 @@ def en_name(name:str, addIndex):
 
 
 
-data = load_json('./LkBSYdhE3235_1.json')
-save_json('./LkBSYdhE3235_2.json', savedata=data)
+data = load_json('./repost4/LgQfNwnmY444.json')
+save_json('./LgQfNwnmY444.json', savedata=data)
