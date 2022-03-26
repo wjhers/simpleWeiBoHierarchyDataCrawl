@@ -100,5 +100,5 @@ def en_name(name:str, addIndex):
 
 
 
-data = load_json('./repost4/LgQfNwnmY444.json')
-save_json('./LgQfNwnmY444.json', savedata=data)
+data = load_json('./repost4/LkBUUaorm1860.json')
+save_json('./LkBUUaorm1860.json', savedata=data)
