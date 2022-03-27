@@ -37,28 +37,54 @@ def save_json(filename, savedata):
 
 
 def recursive(data:dict):
-    # name
+    # # name
     # data['name'] = en_name(data['name'], 0)
-    # source
+    # # source
     # data['data']['source'] = en_name(data['data']['source'], 0)
-    # time
-    # data['data']['time'] = data['data']['time'] #.split(' ')[0]
-    # id
-    # data['data']['nodeIndex'] = encodingIndex()
-    # 位置
+    # # time
+    # # data['data']['time'] = data['data']['time'] #.split(' ')[0]
+    # # id
+    # # data['data']['nodeIndex'] = encodingIndex()
+    # # 位置
     # data['data']['geo'] = encodingGeo()
-    # 性别
+    # # 性别
     # if(data['data']['gender'] == '-'):
     #     data['data']['gender'] = encodingGender()
-    # 长文本
+    # # 长文本
     # data['data']['isLongText'] = encodingLongText()
-    # 文本长度
-    data['data']['textLength'] = random.randint(20,50) if data['data']['isLongText'] else random.randint(2,5)
-    
+    # # 文本长度
+    # data['data']['textLength'] = random.randint(20,50) if data['data']['isLongText'] else random.randint(2,5)
+    # # 用户类型
     # if data['data']['icon_list'] > 0:
     #     data['data']['type'] = 'vip'
     # else:
     #     data['data']['type'] = 'common'
+    
+    if data['data']['followers_count'] == 0:
+        data['data']['followers_count'] = 3
+        data['data']['followers_count_str'] = "3"
+
+    # ============================================================ #
+    # data['data']['verified'] = 0
+    # data['data']['verified_type'] = -1
+    # data['data']['domain'] = '-'
+    # data['data']['mbrank'] = 1
+    # data['data']['mbtype'] = 1
+    # data['data']['icon_list'] = 0
+    # data['data']['textLength'] = 0
+    # data['data']['comments_count'] = 0
+    # data['data']['attitudes_count'] = 0
+    # data['data']['isLongText'] = 0
+    # data['data']['is_show_bulletin'] = 0
+    # data['data']['followers_count'] = 0
+    # data['data']['followers_count_str'] = '0'
+    # data['data']['friends_count'] = 0
+    # data['data']['statuses_count'] = 1
+    # data['data']['edu'] = '-'
+    # data['data']['career'] = '-'
+    # data['data']['type'] = 'common'
+    # ============================================================ #
+
 
     
     if('children' in data.keys()) and len(data['children']):
