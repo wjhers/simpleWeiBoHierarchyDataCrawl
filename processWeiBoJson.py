@@ -38,27 +38,35 @@ def save_json(filename, savedata):
 
 def recursive(data:dict):
     # name
-    data['name'] = en_name(data['name'], 0)
+    # data['name'] = en_name(data['name'], 0)
     # source
-    data['data']['source'] = en_name(data['data']['source'], 0)
+    # data['data']['source'] = en_name(data['data']['source'], 0)
     # time
     # data['data']['time'] = data['data']['time'] #.split(' ')[0]
     # id
     # data['data']['nodeIndex'] = encodingIndex()
     # 位置
-    data['data']['geo'] = encodingGeo()
+    # data['data']['geo'] = encodingGeo()
     # 性别
-    if(data['data']['gender'] == '-'):
-        data['data']['gender'] = encodingGender()
-    if data['data']['icon_list'] > 0:
-        data['data']['type'] = 'vip'
-    else:
-        data['data']['type'] = 'common'
+    # if(data['data']['gender'] == '-'):
+    #     data['data']['gender'] = encodingGender()
+    # 长文本
+    # data['data']['isLongText'] = encodingLongText()
+    # 文本长度
+    data['data']['textLength'] = random.randint(20,50) if data['data']['isLongText'] else random.randint(2,5)
+    
+    # if data['data']['icon_list'] > 0:
+    #     data['data']['type'] = 'vip'
+    # else:
+    #     data['data']['type'] = 'common'
 
     
     if('children' in data.keys()) and len(data['children']):
         for element in data['children']:
             recursive(element)
+    else:
+        data['children'] = []
+    
     return data
 
 
@@ -75,11 +83,16 @@ def encodingGeo():
     'Shaanxi','Shanghai','Sichuan','Tianjin','Tibet','Xinjiang','Yunnan','Zhejiang',
     'Macao','Hong Kong','Taiwan']
     return random.choice(provinces)
-    # pass
 
 def encodingGender():
     gender = ['m', 'f']
     return random.choice(gender)
+
+def encodingLongText():
+    return random.choice([0, 1])
+
+def encodingTextLength():
+    return random.randint(20,50)
 
 Index = 0
 def en_name(name:str, addIndex):
@@ -100,5 +113,5 @@ def en_name(name:str, addIndex):
 
 
 
-data = load_json('./repost4/LkBUUaorm1860.json')
-save_json('./LkBUUaorm1860.json', savedata=data)
+data = load_json('./LgQfNwnmY444.json')
+save_json('./LgQfNwnmY444.json', savedata=data)
