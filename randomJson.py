@@ -2,6 +2,8 @@
 # -*- coding:utf-8 -*-
 # Author:wjher
 
+# 实时可视化层次结构数据
+# https://observablehq.com/@katopz/ml-map-on-d3-tidy-tree
 
 import json
 import random
@@ -113,3 +115,4 @@ for i in range(10):
 
 source = './randjson'
 addJsonValue(source=source)
+
