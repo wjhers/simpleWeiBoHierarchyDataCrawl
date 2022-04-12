@@ -9,8 +9,8 @@ from addJsonValue import addJsonValue
 
 def buildName(length:int):
     alphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQISTUVWXYZ0123456789"
-    characters = "".join(random.sample(alphabet, length))
-    return characters
+    tmpname = "".join(random.sample(alphabet, length))
+    return tmpname
 
 def buildInitDict(name, depth):
     return {"name":name, "pid":depth - 1 if depth > 0 else depth, "mid":depth, "children":[]}
@@ -98,7 +98,7 @@ def randomJson(namelen, depth, nodesize):
     
     return root, rootname
 
-# 随机生成10条数据 高度2-6 节点名称长度5-15 节点个数20-250 命名方式为 根节点名称+深度.json
+# 随机生成10条数据 高度2-6 节点名称长度5-15 节点个数20-120 命名方式为 根节点名称+深度.json
 
 for i in range(10):
     depth = random.randint(4, 6)
