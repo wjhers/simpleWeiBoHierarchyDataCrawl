@@ -22,7 +22,7 @@ def addInitNode(parent, node):
             parent['children'] = []
         # parent['children'].append(node)
         # 添加元素
-        tmp_len = 0 if len(parent['children'])==0 else  len(parent['children']) - 1
+        tmp_len = 0 if len(parent['children'])==0 else len(parent['children']) - 1
         parent['children'].insert(random.randint(0, tmp_len),node)
         return True
     else:
@@ -56,13 +56,15 @@ def addOtherNode(parent, node, depth):
         if 'children' not in parent.keys():
             parent['children'] = []
         # 添加元素
-        if(random.random()<=0.5):
+        # if(random.random()<=0.5):
             # 列表末尾添加
-            parent['children'].append(node)
-        else:
+            # parent['children'].append(node)
+        # else:
             # 列表随机一个位置添加
-            tmp_len = 0 if len(parent['children'])==0 else  len(parent['children']) - 1
-            parent['children'].insert(random.randint(0, tmp_len),node)
+            # tmp_len = 0 if len(parent['children'])==0 else  len(parent['children']) - 1
+            # parent['children'].insert(random.randint(0, tmp_len),node)
+        tmp_len = 0 if len(parent['children'])==0 else  len(parent['children']) - 1
+        parent['children'].insert(random.randint(0, tmp_len),node)
         return True
     else:
         if 'children' not in parent.keys():

@@ -16,7 +16,7 @@ from zhon.hanzi import punctuation
 from xpinyin import Pinyin
 # from pykakasi import kakasi, wakati
 import random
-random.seed(2022)
+# random.seed(2022)
 
 
 def load_json(filename,str_to_value:str='value'):

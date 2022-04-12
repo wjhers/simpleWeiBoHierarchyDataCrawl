@@ -1,0 +1,222 @@
+{
+    "name": "ML",
+    "children": [
+      {
+        "name": "Classical Learning",
+        "children": [
+          {
+            "name": "Supervised",
+            "children": [
+              {
+                "name": "Regression",
+                "children": [
+                  {
+                    "name": "Linear Regression",
+                    "value": 100
+                  },
+                  {
+                    "name": "Polynomial Regression",
+                    "value": 90
+                  },
+                  {
+                    "name": "Ridge/Lasso Regression (L1/L2)",
+                    "value": 100
+                  }
+                ]
+              },
+              {
+                "name": "Classification",
+                "children": [
+                  {
+                    "name": "K-NN",
+                    "value": 100
+                  },
+                  {
+                    "name": "Naive Bayes",
+                    "value": 90
+                  },
+                  {
+                    "name": "SVM",
+                    "value": 90
+                  },
+                  {
+                    "name": "Decision Trees",
+                    "value": 90
+                  },
+                  {
+                    "name": "Logistic Regression",
+                    "value": 100
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "name": "Unsupervised",
+            "children": [
+              {
+                "name": "Clustering",
+                "children": [
+                  {
+                    "name": "K-Means",
+                    "value": 100
+                  },
+                  {
+                    "name": "DBScan"
+                  },
+                  {
+                    "name": "Agglomerative"
+                  },
+                  {
+                    "name": "Mean-Shift"
+                  },
+                  {
+                    "name": "Fuzzy C-Means"
+                  }
+                ]
+              },
+              {
+                "name": "Dimension Reduction (Generalization)",
+                "children": [
+                  {
+                    "name": "PCA"
+                  },
+                  {
+                    "name": "t-SNE"
+                  },
+                  {
+                    "name": "LSA"
+                  },
+                  {
+                    "name": "SVD"
+                  },
+                  {
+                    "name": "LDA"
+                  }
+                ]
+              },
+              {
+                "name": "Pattern Search",
+                "children": [
+                  {
+                    "name": "Euclat"
+                  },
+                  {
+                    "name": "Apriori"
+                  },
+                  {
+                    "name": "FP-Growth"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Reinforcement learning",
+        "children": [
+          {
+            "name": "Generic Algorithm",
+            "value": 70
+          },
+          {
+            "name": "A3C"
+          },
+          {
+            "name": "SARSA"
+          },
+          {
+            "name": "Q-Learning"
+          },
+          {
+            "name": "Deep Q-Network (DQN)"
+          }
+        ]
+      },
+      {
+        "name": "Ensemble Methods",
+        "children": [
+          {
+            "name": "Boosting",
+            "children": [
+              {
+                "name": "AdaBoost",
+                "value": 100
+              },
+              {
+                "name": "CatBoost"
+              },
+              {
+                "name": "XGBoost",
+                "value": 50
+              },
+              {
+                "name": "LightGBM",
+                "value": 50
+              }
+            ]
+          },
+          {
+            "name": "Bagging",
+            "children": [
+              {
+                "name": "Random Forest",
+                "value": 70
+              }
+            ]
+          },
+          {
+            "name": "Stacking",
+            "value": 50
+          }
+        ]
+      },
+      {
+        "name": "Deep Learning",
+        "children": [
+          {
+            "name": "Convolutional Neural Network (CNN)",
+            "children": [
+              {
+                "name": "DCNN",
+                "value": 50
+              }
+            ]
+          },
+          {
+            "name": "Recurrent Neural Network (RNN)",
+            "children": [
+              {
+                "name": "LSM"
+              },
+              {
+                "name": "LSTM",
+                "value": 50
+              },
+              {
+                "name": "GRU"
+              }
+            ]
+          },
+          {
+            "name": "Generative Adversarial Network (GAN)",
+            "value": 50
+          },
+          {
+            "name": "Autoencoders",
+            "children": [
+              {
+                "name": "seq2seq",
+                "value": 50
+              }
+            ]
+          },
+          {
+            "name": "Perceptrons (MLP)",
+            "value": 50
+          }
+        ]
+      }
+    ]
+}
